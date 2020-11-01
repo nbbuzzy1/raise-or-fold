@@ -1,0 +1,23 @@
+.actions-container {
+	margin: 20px auto;
+}
+
+.raise-fold-container {
+	display: flex;
+	justify-content: center;
+}
+
+.button {
+	background: #03699B;
+    border: none;
+    color: white;
+    font-weight: bold;
+	padding: 1rem;
+	margin: 5px;
+}
+
+.button:hover {
+	color: #F58300;
+    font-weight: bold;
+    cursor: pointer;
+}

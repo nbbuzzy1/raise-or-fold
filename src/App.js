@@ -1,32 +1,100 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import './App.css';
 import Header from './components/Header';
 import Position from './components/Position';
 import Card from './components/Card';
+import Actions from './components/Actions';
+import Results from './components/Results';
 import deck from './data/deck';
 import positions from './data/positions';
+import raisingHands from './data/raising-hands';
 
 const App = () => {
-	const setUpStartingHand = (startingDeck) => {
-		const cardOne = startingDeck.splice([Math.floor(Math.random() * 52)], 1)[0];
-		const cardTwo = startingDeck.splice([Math.floor(Math.random() * 51)], 1)[0];
+	const [currentCorrect, setCurrentCorrect] = useState(0);
+	const [longestCorrect, setLongestCorrect] = useState(0);
+	const [positionIndex, setPositionIndex] = useState(Math.floor(Math.random() * 8));
+	const [positionDisplay, setPositionDisplay] = useState(positions[positionIndex]);
+	const [cardOne, setCardOne] = useState(null);
+	const [cardTwo, setCardTwo] = useState(null);
 
-		return [cardOne, cardTwo]
+	const shuffleCardsAndPosition = () => {
+		setUpStartingHand(deck.slice());
+		setPositionIndex(Math.floor(Math.random() * 8));
+		setPositionDisplay(positions[positionIndex]);
 	}
 
-	const setPosition = () => positions[Math.floor(Math.random() * 8)];
+	const setUpStartingHand = (startingDeck) => {
+		const firstCard = startingDeck.splice([Math.floor(Math.random() * 52)], 1)[0];
+		const secondCard = startingDeck.splice([Math.floor(Math.random() * 51)], 1)[0];
 
-	const pokerHand = setUpStartingHand(deck);
-	const position = setPosition();
-	console.log(position);
+		setCardOne(firstCard);
+		setCardTwo(secondCard);
+	}
+
+	useEffect(() => {
+		shuffleCardsAndPosition();
+	}, [])
+
+	const setPokerHandForRaisingFormat = () => {
+		if (cardOne[0] === cardTwo[0]) { //pair
+			return `${cardOne[0]}${cardTwo[0]}o`;
+		} else {
+			//Are the cards suited?
+			return cardOne[1] === cardTwo[1] ? `${cardOne[0]}${cardTwo[0]}s`
+				: `${cardOne[0]}${cardTwo[0]}o`
+		}
+	}
+
+	const reverseHand = (pokerHand) => {
+		return `${pokerHand[1]}${pokerHand[0]}${pokerHand[2]}`;
+	}
+
+	const isRaisingHand = (comparisonHand) => {
+		const shouldRaise = raisingHands[positionIndex].find((pokerHand) => {
+			//We want to check for both AJo and JAo
+			const raisingHandReverse = reverseHand(pokerHand);
+			return pokerHand === comparisonHand || raisingHandReverse === comparisonHand;
+		});
+
+		return shouldRaise !== undefined;
+	}
+
+	const increaseCurrentCorrectAndCheckLongest = () => {
+		const newCurrentValue = currentCorrect + 1;
+		setCurrentCorrect(newCurrentValue);
+		if (newCurrentValue > longestCorrect) {
+			setLongestCorrect(newCurrentValue);
+		}
+	}
+
+	const raise = () => {
+		const comparisonHand = setPokerHandForRaisingFormat(cardOne, cardTwo);
+
+		isRaisingHand(comparisonHand) ? increaseCurrentCorrectAndCheckLongest() : setCurrentCorrect(0);
+		shuffleCardsAndPosition()
+	}
+
+	const fold = () => {
+		const comparisonHand = setPokerHandForRaisingFormat(cardOne, cardTwo);
+
+		isRaisingHand(comparisonHand) ? setCurrentCorrect(0) : increaseCurrentCorrectAndCheckLongest();
+		shuffleCardsAndPosition()
+	}
+
+	const reset = () => {
+		setCurrentCorrect(0);
+		setLongestCorrect(0);
+		shuffleCardsAndPosition()
+	}
 
 	return (
 		<React.Fragment>
 			<Header />
-			<Position position={position} />
-			<Card cardValue={pokerHand[0]} />
-			<Card cardValue={pokerHand[1]} />
+			<Position position={positionDisplay} />
+			<Card cardValue={cardOne} />
+			<Card cardValue={cardTwo} />
+			<Actions raise={raise} fold={fold} reset={reset} />
+			<Results currentCorrect={currentCorrect} longestCorrect={longestCorrect} />
 		</React.Fragment>
 	);
 }
