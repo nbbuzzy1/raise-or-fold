@@ -1,0 +1,13 @@
+.header-container {
+	background: #03699B;
+    color: #F58300;
+	margin-bottom: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.header-container h1 {
+	margin: 0;
+	font-size: 3rem;
+}
