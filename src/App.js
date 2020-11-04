@@ -18,14 +18,14 @@ const App = () => {
 	const [cardTwo, setCardTwo] = useState(null);
 
 	const shuffleCardsAndPosition = () => {
-		setUpStartingHand(deck.slice());
+		setStartingHand(deck.slice());
 		setPositionIndex(Math.floor(Math.random() * 8));
 		setPositionDisplay(positions[positionIndex]);
 	}
 
-	const setUpStartingHand = (startingDeck) => {
-		const firstCard = startingDeck.splice([Math.floor(Math.random() * 52)], 1)[0];
-		const secondCard = startingDeck.splice([Math.floor(Math.random() * 51)], 1)[0];
+	const setStartingHand = (startingDeck) => {
+		const firstCard = startingDeck.splice(Math.floor(Math.random() * 52), 1)[0];
+		const secondCard = startingDeck.splice(Math.floor(Math.random() * 51), 1)[0];
 
 		setCardOne(firstCard);
 		setCardTwo(secondCard);
@@ -37,9 +37,9 @@ const App = () => {
 
 	const setPokerHandForRaisingFormat = () => {
 		if (cardOne[0] === cardTwo[0]) { //pair
-			return `${cardOne[0]}${cardTwo[0]}o`;
+			return `${cardOne[0]}${cardTwo[0]}`;
 		} else {
-			//Are the cards suited?
+			//Are the cards suited or offsuit?
 			return cardOne[1] === cardTwo[1] ? `${cardOne[0]}${cardTwo[0]}s`
 				: `${cardOne[0]}${cardTwo[0]}o`
 		}
@@ -62,6 +62,7 @@ const App = () => {
 	const increaseCurrentCorrectAndCheckLongest = () => {
 		const newCurrentValue = currentCorrect + 1;
 		setCurrentCorrect(newCurrentValue);
+
 		if (newCurrentValue > longestCorrect) {
 			setLongestCorrect(newCurrentValue);
 		}
