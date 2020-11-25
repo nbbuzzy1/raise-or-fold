@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, componentDidMount } from 'react';
 
+import store from './store';
+import { shuffleCards, setPosition } from './actions/card';
 import Header from './components/Header';
 import Position from './components/Position';
 import Card from './components/Card';
@@ -32,6 +34,10 @@ const App = () => {
 		setCardOne(firstCard);
 		setCardTwo(secondCard);
 	}
+
+	store.dispatch(shuffleCards())
+	store.dispatch(setPosition());
+	console.log(store.getState())
 
 	useEffect(() => {
 		shuffleCardsAndPosition();
