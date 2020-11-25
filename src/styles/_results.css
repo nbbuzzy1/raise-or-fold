@@ -1,3 +1,11 @@
 .results-container {
 	margin: 1rem 0;
 }
+
+.results-container .green {
+	color: green;
+}
+
+.results-container .red {
+	color: red;
+}

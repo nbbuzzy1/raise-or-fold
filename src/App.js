@@ -16,6 +16,8 @@ const App = () => {
 	const [positionDisplay, setPositionDisplay] = useState(positions[positionIndex]);
 	const [cardOne, setCardOne] = useState(null);
 	const [cardTwo, setCardTwo] = useState(null);
+	const [showResult, setShowResult] = useState(false);
+	const [result, setResult] = useState(null);
 
 	const shuffleCardsAndPosition = () => {
 		setStartingHand(deck.slice());
@@ -60,6 +62,7 @@ const App = () => {
 	}
 
 	const increaseCurrentCorrectAndCheckLongest = () => {
+		displayResult(true);
 		const newCurrentValue = currentCorrect + 1;
 		setCurrentCorrect(newCurrentValue);
 
@@ -68,17 +71,28 @@ const App = () => {
 		}
 	}
 
+	const handleWrongChoice = () => {
+		displayResult(false);
+		setCurrentCorrect(0);
+	}
+
+	const displayResult = (wasCorrectChoice) => {
+		wasCorrectChoice ? setResult('Correct!') : setResult('Wrong!');
+		setShowResult(true);
+		setTimeout(() => setShowResult(false), 2000);
+	}
+
 	const raise = () => {
 		const comparisonHand = setPokerHandForRaisingFormat(cardOne, cardTwo);
 
-		isRaisingHand(comparisonHand) ? increaseCurrentCorrectAndCheckLongest() : setCurrentCorrect(0);
+		isRaisingHand(comparisonHand) ? increaseCurrentCorrectAndCheckLongest() : handleWrongChoice();
 		shuffleCardsAndPosition()
 	}
 
 	const fold = () => {
 		const comparisonHand = setPokerHandForRaisingFormat(cardOne, cardTwo);
 
-		isRaisingHand(comparisonHand) ? setCurrentCorrect(0) : increaseCurrentCorrectAndCheckLongest();
+		isRaisingHand(comparisonHand) ? handleWrongChoice() : increaseCurrentCorrectAndCheckLongest();
 		shuffleCardsAndPosition()
 	}
 
@@ -95,7 +109,7 @@ const App = () => {
 			<Card cardValue={cardOne} />
 			<Card cardValue={cardTwo} />
 			<Actions raise={raise} fold={fold} reset={reset} />
-			<Results currentCorrect={currentCorrect} longestCorrect={longestCorrect} />
+			<Results currentCorrect={currentCorrect} longestCorrect={longestCorrect} result={result} showResult={showResult} />
 		</React.Fragment>
 	);
 }
