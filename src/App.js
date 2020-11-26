@@ -7,43 +7,16 @@ import Position from './components/Position';
 import Card from './components/Card';
 import Actions from './components/Actions';
 import Results from './components/Results';
-import deck from './data/deck';
-import positions from './data/positions';
 import raisingHands from './data/raising-hands';
 
 const App = () => {
-	const [currentCorrect, setCurrentCorrect] = useState(0);
-	const [longestCorrect, setLongestCorrect] = useState(0);
-	const [positionIndex, setPositionIndex] = useState(Math.floor(Math.random() * 8));
-	const [positionDisplay, setPositionDisplay] = useState(positions[positionIndex]);
-	const [cardOne, setCardOne] = useState(null);
-	const [cardTwo, setCardTwo] = useState(null);
-	const [showResult, setShowResult] = useState(false);
-	const [result, setResult] = useState(null);
-
 	const shuffleCardsAndPosition = () => {
-		setStartingHand(deck.slice());
-		setPositionIndex(Math.floor(Math.random() * 8));
-		setPositionDisplay(positions[positionIndex]);
+		store.dispatch(shuffleCards());
+		store.dispatch(setPosition());
+		console.log(store.getState())
 	}
 
-	const setStartingHand = (startingDeck) => {
-		const firstCard = startingDeck.splice(Math.floor(Math.random() * 52), 1)[0];
-		const secondCard = startingDeck.splice(Math.floor(Math.random() * 51), 1)[0];
-
-		setCardOne(firstCard);
-		setCardTwo(secondCard);
-	}
-
-	store.dispatch(shuffleCards())
-	store.dispatch(setPosition());
-	console.log(store.getState())
-
-	useEffect(() => {
-		shuffleCardsAndPosition();
-	}, [])
-
-	const setPokerHandForRaisingFormat = () => {
+	const setPokerHandForRaisingFormat = (cardOne, cardTwo) => {
 		if (cardOne[0] === cardTwo[0]) { //pair
 			return `${cardOne[0]}${cardTwo[0]}`;
 		} else {
@@ -104,7 +77,6 @@ const App = () => {
 
 	const reset = () => {
 		setCurrentCorrect(0);
-		setLongestCorrect(0);
 		shuffleCardsAndPosition()
 	}
 

@@ -32,6 +32,10 @@ export default (state = initialState, action) => {
 			return { ...state, currentCorrect: state.currentCorrect++ };
 		case 'INCREASE_LONGEST_CORRECT':
 			return { ...state, longestCorrect: state.longestCorrect++ };
+		case 'RESET_CURRENT_CORRECT':
+			return { ...state, currentCorrect: 0 };
+		case 'RESET_LONGEST_CORRECT':
+			return { ...state, longestCorrect: 0 };
 		default:
 			return state;
 	}
