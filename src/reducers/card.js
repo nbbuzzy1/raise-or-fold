@@ -11,6 +11,7 @@ const initialState = {
 	longestCorrect: 0,
 	positionIndex: initialPositionIndex,
 	positionDisplay: positions[initialPositionIndex],
+	result: ''
 }
 
 const shuffleCards = () => {
@@ -36,6 +37,8 @@ export default (state = initialState, action) => {
 			return { ...state, currentCorrect: 0 };
 		case 'RESET_LONGEST_CORRECT':
 			return { ...state, longestCorrect: 0 };
+		case 'UPDATE_RESULT':
+			return { ...state, result: action.payload }
 		default:
 			return state;
 	}
