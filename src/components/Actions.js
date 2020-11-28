@@ -18,6 +18,12 @@ const setPokerHandForRaisingFormat = (cardOne, cardTwo) => {
 	}
 }
 
+const shuffleCardsAndPosition = () => {
+	store.dispatch(shuffleCards());
+	store.dispatch(setPosition());
+	console.log(store.getState())
+}
+
 const reverseHand = (pokerHand) => {
 	return `${pokerHand[1]}${pokerHand[0]}${pokerHand[2]}`;
 }
@@ -39,6 +45,11 @@ const increaseCurrentCorrectAndCheckLongest = (currentCorrect, longestCorrect, i
 	if (currentCorrect > longestCorrect) {
 		increaseLongestCorrect();
 	}
+}
+
+const handleWrongChoice = (displayWrong, displayNothing) => {
+	displayWrong();
+	setTimeout(() => displayNothing(), 2000);
 }
 
 const raise = ({ firstCard, secondCard, currentCorrect, longestCorrect, positionIndex, increaseCurrentCorrect, increaseLongestCorrect, displayCorrect, displayWrong, displayNothing }) => {
