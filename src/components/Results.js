@@ -6,9 +6,9 @@ import '../styles/_results.css';
 const Results = ({ currentCorrect, longestCorrect, result }) => {
 	return (
 		<div className="results-container">
-			{result && <p className={result === 'Correct!' ? 'green' : 'red'}>{result}</p>}
-			{currentCorrect && <p>Current Win Streak: {currentCorrect}</p>}
-			{longestCorrect && <p>Longest Win Streak: {longestCorrect}</p>}
+			<p className={result === 'Correct!' ? 'green' : 'red'}>{result}</p>
+			{currentCorrect !== 0 && <p>Current Win Streak: {currentCorrect}</p>}
+			{longestCorrect !== 0 && <p>Longest Win Streak: {longestCorrect}</p>}
 		</div>
 	)
 }

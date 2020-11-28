@@ -30,9 +30,9 @@ export default (state = initialState, action) => {
 			const positionIndex = randomPosition();
 			return { ...state, positionIndex, positionDisplay: positions[positionIndex] };
 		case 'INCREASE_CURRENT_CORRECT':
-			return { ...state, currentCorrect: state.currentCorrect++ };
+			return { ...state, currentCorrect: state.currentCorrect + 1 };
 		case 'INCREASE_LONGEST_CORRECT':
-			return { ...state, longestCorrect: state.longestCorrect++ };
+			return { ...state, longestCorrect: state.longestCorrect + 1 };
 		case 'RESET_CURRENT_CORRECT':
 			return { ...state, currentCorrect: 0 };
 		case 'RESET_LONGEST_CORRECT':
