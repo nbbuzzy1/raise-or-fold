@@ -13,12 +13,6 @@ class Actions extends React.Component {
 		this.shuffleCardsAndPosition();
 	}
 
-	componentDidUpdate() {
-		if (this.props.currentCorrect > this.props.longestCorrect) {
-			this.props.increaseLongestCorrect();
-		}
-	}
-
 	shuffleCardsAndPosition() {
 		this.props.shuffleCards();
 		this.props.setPosition();
@@ -27,6 +21,7 @@ class Actions extends React.Component {
 	increaseCurrentCorrectAndCheckLongest() {
 		this.displayResult(true);
 		this.props.increaseCurrentCorrect();
+		if (this.props.currentCorrect + 1 > this.props.longestCorrect) this.props.increaseLongestCorrect();
 	}
 
 	handleWrongChoice() {
