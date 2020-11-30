@@ -91,14 +91,8 @@ class Actions extends React.Component {
 	}
 }
 
-const mapStateToProps = state => {
-	return {
-		firstCard: state.firstCard,
-		secondCard: state.secondCard,
-		currentCorrect: state.currentCorrect,
-		longestCorrect: state.longestCorrect,
-		positionIndex: state.positionIndex
-	}
+const mapStateToProps = ({ firstCard, secondCard, currentCorrect, longestCorrect, positionIndex }) => {
+	return { firstCard, secondCard, currentCorrect, longestCorrect, positionIndex }
 }
 
 const mapDispatchToProps = dispatch => {
